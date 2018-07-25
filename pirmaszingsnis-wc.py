@@ -16,17 +16,14 @@ outputFile = open('pirmaszingsnis-wc.csv', 'w', newline='', encoding='utf-8')
 outputWriter = csv.writer(outputFile)
 
 # Create a list with column titles and write it to the csv as the first line
-column_names = ['ID', 'Source', 'Title', 'Photo_url', 'Price', 'Link_to_page']
+column_names = ['ID', 'Source', 'Title', 'Photo_url', 'Price', 'Link_to_page', 'Bigger_photo_url', 'Description']
 outputWriter.writerow(column_names)
 
-cycle_list = ['Title', 'Photo_url', 'Price', 'Link_to_page']
 
-# a variable to generate IDs
-
-link = 'https://www.pirmaszingsnis.lt/Produktai/slaugos-priemones/wc-ir-vonios-reikmenys'
+main_link = 'https://www.pirmaszingsnis.lt/Produktai/slaugos-priemones/wc-ir-vonios-reikmenys'
 
 driver = webdriver.Chrome()
-driver.get(link)
+driver.get(main_link)
 
 titles = driver.find_elements_by_class_name('title-block')
 title_strings = [title.text for title in titles]
@@ -39,14 +36,28 @@ price_strings = [price.text for price in prices]
 
 links = driver.find_elements_by_class_name('ext_button')
 link_hrefs = [link.get_attribute('href') for link in links]
+del link_hrefs[-4 : ]
 
-all = list(map(list, zip(title_strings, photo_urls, price_strings, link_hrefs)))
+bigger_photos = []
+descriptions = []
+
+for link in link_hrefs:
+    driver.get(link)
+    bigger_photo = driver.find_element_by_tag_name('img')
+    bigger_photo_url = bigger_photo.get_attribute('src')
+    bigger_photos.append(bigger_photo_url)
+    description = driver.find_element_by_class_name('product-cont').text
+    descriptions.append(description)
+
+
+all = list(map(list, zip(title_strings, photo_urls, price_strings, link_hrefs, bigger_photos, descriptions)))
 print(all)
 
+# a variable to generate IDs
 id = 1
-for row in list(all):
+for row in all:
     row.insert(0, id)
-    row.insert(1, link)
+    row.insert(1, main_link)
     outputWriter.writerow(row)
     id+=1
 
