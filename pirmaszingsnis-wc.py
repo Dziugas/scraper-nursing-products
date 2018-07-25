@@ -28,8 +28,12 @@ driver.get(main_link)
 titles = driver.find_elements_by_class_name('title-block')
 title_strings = [title.text for title in titles]
 
-photos = driver.find_elements_by_tag_name('img')
+container = driver.find_element_by_xpath('//*[@id="page"]/div[3]/div/div[2]/div[2]/div[1]')
+photos = container.find_elements_by_tag_name('img')
 photo_urls = [photo.get_attribute('src') for photo in photos]
+
+
+
 
 prices = driver.find_elements_by_class_name('price-block')
 price_strings = [price.text for price in prices]
@@ -43,11 +47,17 @@ descriptions = []
 
 for link in link_hrefs:
     driver.get(link)
-    bigger_photo = driver.find_element_by_tag_name('img')
+    bigger_photo = driver.find_element_by_xpath('// *[ @ id = "page"] / div[3] / div / div[2] / div[2] / div[1] / div[2] / div / a / img')
     bigger_photo_url = bigger_photo.get_attribute('src')
     bigger_photos.append(bigger_photo_url)
-    description = driver.find_element_by_class_name('product-cont').text
+    description_container = driver.find_element_by_class_name('product-cont')
+    description_paragraphs = description_container.find_elements_by_tag_name('p')
+    description_para_text = [paragraph.text for paragraph in description_paragraphs]
+    description = ''
+    for paragraph in description_para_text:
+        description = description + ' ' + paragraph
     descriptions.append(description)
+
 
 
 all = list(map(list, zip(title_strings, photo_urls, price_strings, link_hrefs, bigger_photos, descriptions)))
