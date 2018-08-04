@@ -33,8 +33,6 @@ photos = container.find_elements_by_tag_name('img')
 photo_urls = [photo.get_attribute('src') for photo in photos]
 
 
-
-
 prices = driver.find_elements_by_class_name('price-block')
 price_strings = [price.text for price in prices]
 
