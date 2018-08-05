@@ -1,10 +1,5 @@
 from selenium import webdriver
 
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-
-from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
-
 import csv
 import time
 
@@ -19,9 +14,8 @@ outputWriter = csv.writer(outputFile)
 column_names = ['ID', 'Source', 'Title', 'Photo_url', 'Price', 'Link_to_page', 'Bigger_photo_url', 'Description']
 outputWriter.writerow(column_names)
 
-
 main_link = 'https://www.pirmaszingsnis.lt/Produktai/slaugos-priemones/wc-ir-vonios-reikmenys'
-
+#todo: fix comments
 driver = webdriver.Chrome()
 driver.get(main_link)
 

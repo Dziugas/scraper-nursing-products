@@ -25,8 +25,6 @@ titles = driver.find_elements_by_class_name('name')
 title_strings = [title.text for title in titles]
 attributes_in_titles = [title.find_element_by_tag_name('a') for title in titles]
 links = [link.get_attribute('href') for link in attributes_in_titles]
-print(title_strings)
-print(links)
 
 #finding all photos / thumbnail images
 photo_urls = []
@@ -35,12 +33,12 @@ for container in image_containers:
     photo = container.find_element_by_tag_name('img')
     photo_url = photo.get_attribute('src')
     photo_urls.append(photo_url)
-print('\n'.join(map(str, photo_urls)))
 
-#finding all prices - todo: Price Old vs Price New
+#finding all prices
+# todo: select New Price if exists, then Old Price (we should add a new column) if exists, if neither exists - select price. Try except.
+
 prices = driver.find_elements_by_class_name('price')
 price_strings = [price.text for price in prices]
-print(price_strings)
 
 bigger_photos = []
 descriptions = []
@@ -52,20 +50,18 @@ for link in links:
     bigger_photo_url = bigger_photo.get_attribute('src')
     bigger_photos.append(bigger_photo_url)
 
-    #get product description todo: escape product title
+#get product description
+# todo: escape product title, we only need the description
     description_element = driver.find_element_by_class_name('tab-content')
     description_element_text = description_element.text
     descriptions.append(description_element_text)
 
-print(bigger_photos)
-print(descriptions)
-
 all = list(map(list, zip(title_strings, photo_urls, price_strings, links, bigger_photos, descriptions)))
 print(all)
 
-
 # a variable to generate IDs
 id = 1
+# insert ids and main link as a source
 for row in all:
     row.insert(0, id)
     row.insert(1, main_link)
