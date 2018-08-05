@@ -56,8 +56,6 @@ for link in link_hrefs:
         description = description + ' ' + paragraph
     descriptions.append(description)
 
-
-
 all = list(map(list, zip(title_strings, photo_urls, price_strings, link_hrefs, bigger_photos, descriptions)))
 print(all)
 

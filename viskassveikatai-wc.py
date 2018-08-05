@@ -37,7 +37,53 @@ for container in image_containers:
     photo_urls.append(photo_url)
 print('\n'.join(map(str, photo_urls)))
 
-#finding all prices
+#finding all prices - todo: Price Old vs Price New
 prices = driver.find_elements_by_class_name('price')
 price_strings = [price.text for price in prices]
 print(price_strings)
+
+bigger_photos = []
+descriptions = []
+
+for link in links:
+    driver.get(link)
+    # get bigger product photos
+    bigger_photo = driver.find_element_by_xpath('//*[@id="slider"]/ul/li/img')
+    bigger_photo_url = bigger_photo.get_attribute('src')
+    bigger_photos.append(bigger_photo_url)
+
+    #get product description todo: escape product title
+    description_element = driver.find_element_by_class_name('tab-content')
+    description_element_text = description_element.text
+    descriptions.append(description_element_text)
+
+print(bigger_photos)
+print(descriptions)
+
+all = list(map(list, zip(title_strings, photo_urls, price_strings, links, bigger_photos, descriptions)))
+print(all)
+
+
+# a variable to generate IDs
+id = 1
+for row in all:
+    row.insert(0, id)
+    row.insert(1, main_link)
+    outputWriter.writerow(row)
+    id+=1
+
+# close the .csv file
+outputFile.close()
+
+# close driver/browser
+driver.close()
+
+#fix the end time of running the script
+end_time = time.clock()
+
+#print the time it took to run the code
+print(end_time-start_time)
+
+
+
+
