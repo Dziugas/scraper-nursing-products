@@ -8,7 +8,7 @@ import time
 start_time = time.clock()
 
 # Open a new csv file to save(write) the results to
-outputFile = open('slaugosiranga-wc.csv', 'w', newline='', encoding='utf-8')
+outputFile = open('slaugosiranga-wc&vonia.csv', 'w', newline='', encoding='utf-8')
 outputWriter = csv.writer(outputFile)
 
 # Create a list with column titles and write it to the csv as the first line
